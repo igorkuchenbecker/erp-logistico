@@ -9,7 +9,11 @@
 <body class="bg-gray-100 min-h-screen">
     <nav class="bg-indigo-700 text-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="{{ route('ufs.index') }}" class="text-xl font-bold">ERP Logístico</a>
+            <div class="flex items-center gap-6">
+                <a href="{{ route('dashboard') }}" class="text-xl font-bold">ERP Logístico</a>
+                <a href="{{ route('ufs.index') }}" class="text-sm text-indigo-200 hover:text-white transition">UFs</a>
+                <a href="{{ route('dashboard') }}" class="text-sm text-indigo-200 hover:text-white transition">Dashboard</a>
+            </div>
             <a href="{{ route('ufs.create') }}"
                class="bg-white text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition">
                 + Nova UF
