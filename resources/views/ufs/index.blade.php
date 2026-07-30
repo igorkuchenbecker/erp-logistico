@@ -6,8 +6,8 @@
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Unidades de Frete (UF)</h1>
         <a href="{{ route('ufs.create') }}"
-           class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-            + Cadastrar UF
+            class="bg-emerald-800 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
+                + Cadastrar UF
         </a>
     </div>
 
@@ -15,14 +15,18 @@
         <input type="text" name="search" placeholder="Buscar por código, origem ou destino..."
                value="{{ request('search') }}"
                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-        <select name="status"
-                class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-            <option value="">Todos os status</option>
-            <option value="pendente" {{ request('status') == 'pendente' ? 'selected' : '' }}>Pendente</option>
-            <option value="em_transito" {{ request('status') == 'em_transito' ? 'selected' : '' }}>Em Trânsito</option>
-            <option value="entregue" {{ request('status') == 'entregue' ? 'selected' : '' }}>Entregue</option>
-            <option value="cancelado" {{ request('status') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
-        </select>
+            <select name="status"
+                    class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                <option value="">Todos os status</option>
+                <option value="pendente" {{ request('status') == 'pendente' ? 'selected' : '' }}>Pendente</option>
+                <option value="aguardando_coleta" {{ request('status') == 'aguardando_coleta' ? 'selected' : '' }}>Aguardando Coleta</option>
+                <option value="coletado" {{ request('status') == 'coletado' ? 'selected' : '' }}>Coletado</option>
+                <option value="unitizado" {{ request('status') == 'unitizado' ? 'selected' : '' }}>Unitizado</option>
+                <option value="liberado_programacao" {{ request('status') == 'liberado_programacao' ? 'selected' : '' }}>Liberado Programação</option>
+                <option value="em_transito" {{ request('status') == 'em_transito' ? 'selected' : '' }}>Em Trânsito</option>
+                <option value="entregue" {{ request('status') == 'entregue' ? 'selected' : '' }}>Entregue</option>
+                <option value="cancelado" {{ request('status') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+            </select>
         <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
             Filtrar
         </button>

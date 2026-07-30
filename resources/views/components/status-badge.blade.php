@@ -2,19 +2,27 @@
 
 @php
     $classes = match($status) {
-        'pendente'    => 'bg-yellow-100 text-yellow-800',
-        'em_transito' => 'bg-blue-100 text-blue-800',
-        'entregue'    => 'bg-green-100 text-green-800',
-        'cancelado'   => 'bg-red-100 text-red-800',
-        default       => 'bg-gray-100 text-gray-800',
+        'pendente'             => 'bg-yellow-100 text-yellow-800',
+        'aguardando_coleta'    => 'bg-orange-100 text-orange-800',
+        'coletado'             => 'bg-cyan-100 text-cyan-800',
+        'unitizado'            => 'bg-purple-100 text-purple-800',
+        'liberado_programacao' => 'bg-teal-100 text-teal-800',
+        'em_transito'          => 'bg-blue-100 text-blue-800',
+        'entregue'             => 'bg-green-100 text-green-800',
+        'cancelado'            => 'bg-red-100 text-red-800',
+        default                => 'bg-gray-100 text-gray-800',
     };
 
     $label = match($status) {
-        'pendente'    => 'Pendente',
-        'em_transito' => 'Em Trânsito',
-        'entregue'    => 'Entregue',
-        'cancelado'   => 'Cancelado',
-        default       => $status,
+        'pendente'             => 'Pendente',
+        'aguardando_coleta'    => 'Aguardando Coleta',
+        'coletado'             => 'Coletado',
+        'unitizado'            => 'Unitizado',
+        'liberado_programacao' => 'Liberado Programação',
+        'em_transito'          => 'Em Trânsito',
+        'entregue'             => 'Entregue',
+        'cancelado'            => 'Cancelado',
+        default                => $status,
     };
 @endphp
 

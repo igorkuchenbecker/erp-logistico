@@ -21,8 +21,13 @@ class DashboardController extends Controller
 
         $recentes = UF::latest()->take(5)->get();
 
+        $emTransito = UF::where('status', 'em_transito')
+            ->whereNotNull('codigo_rastreio')
+            ->orderBy('prazo_entrega')
+            ->get();
+
         return view('dashboard', compact(
-            'total', 'porStatus', 'porDestino', 'recentes'
+            'total', 'porStatus', 'porDestino', 'recentes', 'emTransito'
         ));
     }
 }

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class UFController extends Controller
 {
+    private function convertePeso($valor)
+    {
+        if (is_null($valor)) return 0;
+        $valor = str_replace('.', '', $valor);
+        $valor = str_replace(',', '.', $valor);
+        return (float) $valor;
+    }
+
     public function index()
     {
         $ufs = UF::query()
@@ -24,22 +32,26 @@ class UFController extends Controller
 
     public function create()
     {
-        return view('ufs.create');
+        $proximoCodigo = (UF::max('codigo') ?? 10000) + 1;
+        return view('ufs.create', compact('proximoCodigo'));
     }
 
     public function store(Request $request)
     {
+        $request->merge(['peso' => $this->convertePeso($request->peso)]);
+
         $validated = $request->validate([
-            'codigo'     => 'required|string|max:50|unique:ufs,codigo',
             'peso'       => 'required|numeric|min:0',
-            'tipo_item'  => 'required|string|max:100',
-            'origem'     => 'required|string|max:150',
-            'destino'    => 'required|string|max:150',
-            'status'     => 'required|in:pendente,em_transito,entregue,cancelado',
+            'tipo_item'  => 'required|in:Caixa de madeira,Caixa de papelão,Plástico,Palete,Amarrado,Mala Case',
+            'origem'     => 'required|in:ARM-MACAÉ,IMBETIBA,IMBOASSICA,ARM-RIO',
+            'destino'    => 'required|in:PACU,BMAC',
+            'status'     => 'required|in:pendente,em_transito,entregue,cancelado,unitizado,aguardando_coleta,coletado,liberado_programacao',
             'observacao' => 'nullable|string|max:500',
         ]);
 
-        UF::create($validated);
+        $uf = new UF($validated);
+        UF::gerarRastreio($uf);
+        $uf->save();
 
         return redirect()->route('ufs.index')
             ->with('success', 'UF cadastrada com sucesso.');
@@ -57,17 +69,23 @@ class UFController extends Controller
 
     public function update(Request $request, UF $uf)
     {
+        $request->merge(['peso' => $this->convertePeso($request->peso)]);
+
         $validated = $request->validate([
-            'codigo'     => 'required|string|max:50|unique:ufs,codigo,' . $uf->id,
-            'peso'       => 'required|numeric|min:0',
-            'tipo_item'  => 'required|string|max:100',
-            'origem'     => 'required|string|max:150',
-            'destino'    => 'required|string|max:150',
-            'status'     => 'required|in:pendente,em_transito,entregue,cancelado',
-            'observacao' => 'nullable|string|max:500',
+            'peso'          => 'required|numeric|min:0',
+            'tipo_item'     => 'required|in:Caixa de madeira,Caixa de papelão,Plástico,Palete,Amarrado,Mala Case',
+            'origem'        => 'required|in:ARM-MACAÉ,IMBETIBA,IMBOASSICA,ARM-RIO',
+            'destino'       => 'required|in:PACU,BMAC',
+            'status'        => 'required|in:pendente,em_transito,entregue,cancelado,unitizado,aguardando_coleta,coletado,liberado_programacao',
+            'tipo_caminhao' => 'nullable|string|max:100',
+            'colaborador'   => 'nullable|string|max:100',
+            'trajeto'       => 'nullable|string|max:255',
+            'observacao'    => 'nullable|string|max:500',
         ]);
 
-        $uf->update($validated);
+        $uf->fill($validated);
+        UF::gerarRastreio($uf);
+        $uf->save();
 
         return redirect()->route('ufs.index')
             ->with('success', 'UF atualizada com sucesso.');

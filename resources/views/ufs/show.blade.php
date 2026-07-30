@@ -52,6 +52,37 @@
         </div>
         @endif
 
+        @if($uf->codigo_rastreio)
+        <div class="border-t pt-4">
+            <h3 class="font-bold text-gray-700 mb-3">Rastreamento</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500">Código de Rastreio</p>
+                    <a href="{{ route('rastreamento.show', $uf->codigo_rastreio) }}"
+                       class="font-bold text-emerald-700 hover:underline">
+                        {{ $uf->codigo_rastreio }}
+                    </a>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Prazo de Entrega</p>
+                    <p class="font-medium">{{ $uf->prazo_entrega?->format('d/m/Y H:i') ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Tipo de Caminhão</p>
+                    <p class="font-medium">{{ $uf->tipo_caminhao ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Colaborador</p>
+                    <p class="font-medium">{{ $uf->colaborador ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Trajeto</p>
+                    <p class="font-medium">{{ $uf->trajeto ?? '—' }}</p>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="text-xs text-gray-400 pt-4 border-t">
             Criado em {{ $uf->created_at->format('d/m/Y H:i') }}
             &middot; Atualizado em {{ $uf->updated_at->format('d/m/Y H:i') }}
