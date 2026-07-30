@@ -55,21 +55,7 @@
                         <td class="px-4 py-3">{{ $uf->origem }}</td>
                         <td class="px-4 py-3">{{ $uf->destino }}</td>
                         <td class="px-4 py-3">
-                            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full
-                                @switch($uf->status)
-                                    @case('pendente') bg-yellow-100 text-yellow-800 @break
-                                    @case('em_transito') bg-blue-100 text-blue-800 @break
-                                    @case('entregue') bg-green-100 text-green-800 @break
-                                    @case('cancelado') bg-red-100 text-red-800 @break
-                                @endswitch
-                            ">
-                                @switch($uf->status)
-                                    @case('pendente') Pendente @break
-                                    @case('em_transito') Em Trânsito @break
-                                    @case('entregue') Entregue @break
-                                    @case('cancelado') Cancelado @break
-                                @endswitch
-                            </span>
+                            <x-status-badge :status="$uf->status" />
                         </td>
                         <td class="px-4 py-3 text-right space-x-2">
                             <a href="{{ route('ufs.show', $uf) }}"

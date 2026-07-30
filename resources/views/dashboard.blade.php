@@ -5,7 +5,7 @@
 @section('content')
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h1>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         <div class="bg-white rounded-lg shadow p-4 text-center">
             <p class="text-3xl font-bold text-indigo-600">{{ $total }}</p>
             <p class="text-sm text-gray-500 mt-1">Total de UFs</p>
@@ -21,6 +21,10 @@
         <div class="bg-white rounded-lg shadow p-4 text-center">
             <p class="text-3xl font-bold text-green-600">{{ $porStatus['entregue'] ?? 0 }}</p>
             <p class="text-sm text-gray-500 mt-1">Entregues</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+            <p class="text-3xl font-bold text-red-600">{{ $porStatus['cancelado'] ?? 0 }}</p>
+            <p class="text-sm text-gray-500 mt-1">Cancelados</p>
         </div>
     </div>
 
@@ -71,16 +75,7 @@
                                 </a>
                             </td>
                             <td class="py-2">
-                                <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full
-                                    @switch($uf->status)
-                                        @case('pendente') bg-yellow-100 text-yellow-800 @break
-                                        @case('em_transito') bg-blue-100 text-blue-800 @break
-                                        @case('entregue') bg-green-100 text-green-800 @break
-                                        @case('cancelado') bg-red-100 text-red-800 @break
-                                    @endswitch
-                                ">
-                                    {{ ucfirst(str_replace('_', ' ', $uf->status)) }}
-                                </span>
+                                <x-status-badge :status="$uf->status" />
                             </td>
                             <td class="py-2 text-right text-gray-500">{{ $uf->created_at->format('d/m/Y') }}</td>
                         </tr>
