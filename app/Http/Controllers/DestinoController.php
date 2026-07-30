@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\UF;
 
 class DestinoController extends Controller
 {
@@ -28,7 +28,7 @@ class DestinoController extends Controller
         }
 
         $info = self::$destinos[$destino];
-        $ufs = \App\Models\UF::where('destino', $destino)
+        $ufs = UF::where('destino', $destino)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
