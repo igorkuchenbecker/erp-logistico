@@ -1,58 +1,65 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ERP Logístico
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de controle de entregas e Unidades de Frete (UFs) para a Vix Logística,
+desenvolvido em **Laravel 13** + **Tailwind CSS** (via CDN).
 
-## About Laravel
+## Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **CRUD de UFs**: cadastro com código, peso, tipo de item, origem (ARM-MACAÉ, IMBETIBA, IMBOASSICA, ARM-RIO) e destino (PACU, BMAC)
+- **8 status**: pendente, aguardando coleta, coletado, unitizado, liberado programação, em trânsito, entregue e cancelado
+- **Rastreamento**: código de 4 dígitos gerado automaticamente ao marcar "Em Trânsito", com prazo de entrega de 2 dias
+- **Página de destino**: informações de BMAC (Porto de Imbetiba) e PACU (Porto do Açu) com listagem de UFs
+- **Dashboard**: cards de status, top destinos, entregas recentes e em trânsito
+- **Dark mode**: alternância ☾/☀ persistente
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Rodar sem instalar nada — GitHub Codespaces (recomendado)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Você pode rodar o sistema inteiro no navegador, sem instalar nada na sua máquina:
 
-## Learning Laravel
+1. Acesse https://github.com/igorkuchenbecker/erp-logistico
+2. Clique no botão verde **"<> Code"** → aba **Codespaces** → **Create codespace on main**
+3. Aguarde o ambiente ser preparado (instala PHP, Composer, roda migrations e o seed automaticamente)
+4. Quando o terminal mostrar o projeto pronto, execute:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+   ```bash
+   php artisan serve --host=0.0.0.0 --port=8000
+   ```
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. O Codespaces abre automaticamente o navegador na porta 8000 com o sistema rodando.
+6. Para abrir em outra máquina da rede, clique no ícone de porta (aba **Ports**) → botão direito na porta 8000 → **Forward a Port** → **Port Visibility: Public** e compartilhe o link.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+O banco de dados usa **SQLite** (nenhum servidor MySQL necessário) e já vem populado com **14 UFs de exemplo** (vários status e códigos de rastreio).
 
-## Agentic Development
+### Dados de exemplo
+- Usuário de teste: `test@example.com`
+- UFs com rastreio: acesse a aba **Rastreamento** para ver os códigos gerados.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Rodar localmente
+
+Requisitos: PHP 8.3+, Composer, MySQL ou SQLite.
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Acesse http://localhost:8000
 
-## Contributing
+## Estrutura
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+erp-logistico/
+├── app/
+│   ├── Http/Controllers/   # Dashboard, UF, Rastreamento, Destino
+│   └── Models/UF.php       # model com geração de código e rastreio
+├── database/
+│   ├── migrations/         # users, cache, jobs, ufs, rastreamento
+│   └── seeders/            # UFSeeder (14 UFs de exemplo)
+├── resources/views/        # blade com Tailwind + dark mode
+├── routes/web.php          # rotas
+└── .devcontainer/          # configuração do GitHub Codespaces
+```
